@@ -9,3 +9,11 @@
     font-size: 16px;
 }
 
+a:hover{
+
+	background-color: black;
+}
+
+#catalog{
+	background-color: #ccffff;
+}
