@@ -2,4 +2,4 @@
 /env/
 */.cache
 */.pytest_cahe
-*/__pycache__.*
+*/__pycache__/*

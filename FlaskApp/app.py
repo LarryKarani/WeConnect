@@ -1,65 +1,43 @@
+import json
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
-import json
 
-app = Flask(__name__)
-api = Api(app)
-
-user_list = [ ]
-
-
-@app.errorhandler(404)
-def page_not_found():
-	return jsonify({"error": "resource not found"})
-
-# api 
-class register_user(Resource):
-	def get (self):
-		return {'hello': 'world'}, 200
-
-	def post(self):
-		if len(user_list)!=0:
-			for user in user_list:
-				if user["name"]==request.json["name"]:
-					return {"name":"already exist"}
-
-				elif user["email"] == request.json["email"]:
-					return {"email":"already in use"}
-
-		new_user = {
-				 	"name":request.json["name"],
-					"email":request.json["email"],
-					"password":request.json["password"]
-					}
-
-		user_list.append(new_user)
-
-		return user_list
-
-api.add_resource(register_user, '/POST/api/auth/register')
+try:
+    from WeConnect.FlaskApp.config import config
+except Exception:
+    from FlaskApp.config import config
 
 
-class login(Resource):
-	def get (self):
-		return {'page': 'loads'}, 200
+try:
+    from WeConnect.FlaskApp.api.auth  import RegisterUser, Login, Logout,PasswordReset, RegisterBusiness,UpdateBusiness, DeleteBusiness, RetrieveAllBusiness, RetrieveOne,AddReview
+except Exception:
+    from FlaskApp.api.auth import RegisterUser,RetrieveOne, Login, Logout,PasswordReset,RegisterBusiness, UpdateBusiness,DeleteBusiness, RetrieveAllBusiness, AddReview
 
-	def post(self):
-		for user in user_list:
 
-			if user["name"]!=request.json["name"] and user["password"]!=request.json["password"]:
-				return {"name":"you are not a registered user"}
+def create_app(config_name):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    api = Api(app)
 
-		return {"name":"you are logged in"}
-	
-api.add_resource(login, '/POST/api/auth/login')
+    #regester urls here
+    
+    api.add_resource(RegisterUser, '/api/v1/auth/register')
+    api.add_resource(Login, '/api/auth/v1/login')
+    api.add_resource(Logout, '/api/auth/v1/logout')
+    api.add_resource( PasswordReset, '/api/auth/reset-password')
+    api.add_resource(RegisterBusiness , '/api/businesses')
+    api.add_resource(UpdateBusiness , '/api/businesses/<businessId>')
+    api.add_resource(DeleteBusiness , '/api/businesses/<businessId>')
+    api.add_resource(RetrieveAllBusiness , '/api/businesses/')
+    api.add_resource(RetrieveOne , '/api/businesses/<businessId>')
+    api.add_resource(AddReview, '/api/businesses/<businessId>/reviews')
+    
+    
+    
 
-class logout(Resource):
-	def get(self):
-		return {'hey':'you are logged out'}, 200
 
-api.add_resource(logout, '/POST/api/auth/logout')
+    return app
 
 
 
-if __name__ == '__main__':
-	app.run(debug=True)
+
