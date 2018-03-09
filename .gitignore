@@ -1,2 +1,5 @@
 .idea
 /env/
+*/.cache
+*/.pytest_cahe
+*/__pycache__/*

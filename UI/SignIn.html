@@ -17,6 +17,16 @@
 
 
         <div class="container">
+                <div id="redirects">
+
+  {% with messages = get_flashed_messages() %}
+   {% if messages %}
+   {% for message in messages %}
+   <h3>{{message}}</h3>
+   {%endfor%}
+   {% endif %}
+   {% endwith%}
+                </div>
                 
                   <div class="col-6">
                     <h1>Sign In</h1>
@@ -24,13 +34,13 @@
 
                                 <div class="form-group">
                                         <label for="exampleInputEmail1">Username</label>
-                                        <input type="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter User name" name="username">
+                                        <input type="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter User name" name="name" required>
                                         
                                       </div>
                                 
                                 <div class="form-group">
                                   <label for="exampleInputPassword1">Password</label>
-                                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name ="password">
+                                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name ="password" required>
 
                                   <br>
                                 
@@ -38,7 +48,7 @@
                               </form>
                              <br><br>
 
-                             <span>Dont have an account <a href="signup.html">Sign Up</a></span>
+                             <span>Dont have an account <a href="{{url_for('regester_user')}}">Sign Up</a></span>
 
 
                 </div>
